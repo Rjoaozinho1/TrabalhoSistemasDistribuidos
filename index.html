@@ -1,16 +1,25 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title>Formulario de Login</title>
-</head>
-<body>
-	<h1>Formulario de Login</h1>
-	<form method="post" action="inserir_banco.php">
-		<label for="login">Login:</label>
-		<input type="text" name="login" id="login"><br><br>
-		<label for="senha">Senha:</label>
-		<input type="password" name="senha" id="senha"><br><br>
-		<button type="submit">Enviar</button>
-	</form>
-</body>
+  <head>
+    <meta charset="UTF-8">
+    <title>Cadastro - Login</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+  </head>
+  <body>
+    <div id="login-box">
+      <h1>Cadastrar Usuários</h1>
+      <form>
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" name="nome" placeholder="Digite seu nome">
+		<label for="telefone">Telefone:</label>
+        <input type="text" id="telefone" name="telefone" placeholder="Digite seu telefone">
+        <label for="cpf">Cpf:</label>
+        <input type="text" id="cpf" name="cpf" placeholder="Digite seu cpf">
+        <label for="endereco">Endereço:</label>
+        <input type="text" id="endereco" name="endereco" placeholder="Digite seu endereço">
+        <input type="submit" value="Entrar">
+      </form>
+	  
+    </div>
+  </body>
 </html>
