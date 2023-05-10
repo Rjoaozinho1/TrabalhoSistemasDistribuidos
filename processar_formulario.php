@@ -1,32 +1,45 @@
 <?php
-$servername = "localhost";
+// configurações de conexão com o banco de dados
+$host = "localhost";
+$port = 3306;
+$dbname = "joaopedro";
 $username = "root";
 $password = "";
-$dbname = "joaopedro";
 
-// cria uma conexão com o banco de dados
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// verifica se a conexão foi bem-sucedida
-if ($conn->connect_error) {
-    die("Erro ao conectar ao banco de dados: " . $conn->connect_error);
+// estabelece a conexão com o banco de dados
+$dsn = "mysql:host=$host;port=$port;dbname=$dbname;charset=utf8mb4";
+$options = [
+    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    PDO::ATTR_EMULATE_PREPARES => false,
+];
+try {
+    $pdo = new PDO($dsn, $username, $password, $options);
+} catch (\PDOException $e) {
+    throw new \PDOException($e->getMessage(), (int) $e->getCode());
 }
 
-// recebe os dados do formulário
-$nome = $_POST['nome'];
-$telefone = $_POST['telefone'];
-$cpf = $_POST['cpf'];
-$endereco = $_POST['endereco'];
+// verifica se os dados foram enviados pelo método POST
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // obtém os valores dos campos do formulário
+    $nome = $_POST["nome"];
+    $telefone = $_POST["telefone"];
+    $cpf = $_POST["cpf"];
+    $endereco = $_POST["endereco"];
 
-// insere os dados no banco de dados
-$sql = "INSERT INTO usuarios (nome, telefone, cpf, endereco) VALUES ('$nome', '$telefone', '$cpf', '$endereco')";
+    // prepara a consulta SQL para inserir os dados na tabela "usuarios"
+    $sql = "INSERT INTO usuarios (nome, telefone, cpf, endereco) VALUES (?, ?, ?, ?)";
+    $stmt = $pdo->prepare($sql);
 
-if ($conn->query($sql) === TRUE) {
-    echo "Dados inseridos com sucesso!";
-} else {
-    echo "Erro ao inserir dados: " . $conn->error;
+    // executa a consulta SQL com os valores dos campos do formulário
+    $stmt->execute([$nome, $telefone, $cpf, $endereco]);
+
+    // redireciona o usuário para uma página de confirmação ou exibe uma mensagem de sucesso
+    if ($resultado) {
+        header("Location: sucesso.html");
+    } else {
+        header("Location: falha.html");
+    }
+    exit();
 }
-
-// fecha a conexão com o banco de dados
-$conn->close();
 ?>
